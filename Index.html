@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bisa Cegah Cacing</title>
+<!--
+CATATAN FILE (taruh sejajar dengan index.html):
+ Gambar : mascot.jpeg, cacing gelang.jpeg, cacing cambuk.jpeg, cacing tambang.jpeg,
+          tanah.jpeg, bab sembarangan.jpg, makanan.jpeg, poster.jpeg
+ Musik  : bgm.mp3
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#24325A;--blue:#2EA8FF;--green:#2FC77A;--yellow:#FFD23F;--orange:#FF8A3D;--pink:#FF6FA5;--purple:#800000;--white:#fff;
+--shadow:0 6px 0 rgba(36,50,90,.15);--r:24px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#FFFBEF;color:var(--ink);font:17px/1.6 'Nunito',sans-serif;overflow-x:hidden}
+h1,h2,h3{font-family:'Baloo 2',sans-serif;margin:0;line-height:1.15}
+h2{font-size:clamp(1.7rem,4.5vw,2.4rem);color:var(--purple);margin-bottom:12px}
+h3{font-size:1.2rem;color:var(--ink)}
+p{margin:0 0 12px;max-width:64ch}
+img,video{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer}
+.section{padding:56px 6vw 64px}
+.inner{max-width:940px;margin:0 auto}
+.center{text-align:center}.center p{margin-left:auto;margin-right:auto}
+.bg1{background:#E3F5FF}.bg2{background:#FFF1BF}.bg3{background:#DDFAEA}.bg4{background:#FFE4EF}.bg5{background:#ECE6FF}
+
+#scorebar{position:sticky;top:0;z-index:60;background:var(--purple);color:#fff;padding:8px 6vw;display:flex;justify-content:space-between;font-family:'Baloo 2';font-weight:800}
+#soundbar{position:fixed;left:14px;bottom:14px;z-index:60;background:#fff;border:3px solid var(--purple);border-radius:50px;padding:6px 14px;box-shadow:var(--shadow);display:flex;gap:6px;align-items:center;font-weight:800}
+#soundbar button{background:none;border:0;font-size:1.3rem}
+#navdots{position:fixed;right:14px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:50}
+#navdots a{width:12px;height:12px;border-radius:50%;background:rgba(139,107,255,.3);display:block}
+#navdots a.active{background:var(--pink);transform:scale(1.4)}
+@media(max-width:780px){#navdots{display:none}}
+
+.media-slot{border-radius:var(--r);overflow:hidden;background:linear-gradient(135deg,var(--yellow),var(--pink));display:flex;align-items:center;justify-content:center;font-size:4rem;aspect-ratio:1/1;box-shadow:var(--shadow);border:4px solid #fff}
+.media-slot img{width:100%;height:100%;object-fit:cover}
+.btn{display:inline-block;background:var(--orange);color:#fff;border:0;padding:14px 30px;border-radius:50px;font:800 1.1rem 'Baloo 2';box-shadow:var(--shadow);text-decoration:none;margin-top:10px;transition:transform .15s}
+.btn:hover{transform:translateY(-3px)}
+.btn.blue{background:var(--blue)}.btn.ghost{background:#fff;color:var(--purple);border:3px solid var(--purple);box-shadow:none}
+.card{background:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:22px;border:4px solid var(--yellow)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:24px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:24px}
+@media(max-width:780px){.grid3,.grid2{grid-template-columns:1fr}}
+.grid3 .card:nth-child(3n+1){border-color:var(--blue)}.grid3 .card:nth-child(3n+2){border-color:var(--green)}.grid3 .card:nth-child(3n){border-color:var(--pink)}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.photos .media-slot{aspect-ratio:4/3;font-size:3rem}
+@media(max-width:600px){.photos{grid-template-columns:1fr}}
+
+/* Hero */
+#hero{min-height:88vh;display:flex;align-items:center;background:radial-gradient(circle at 10% 15%,#FFE27A,transparent 40%),radial-gradient(circle at 90% 85%,#9EDBFF,transparent 45%),#FFF6D6}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;width:100%}
+@media(max-width:780px){.hero-grid{grid-template-columns:1fr;text-align:center}.hero-grid .media-slot{max-width:260px;margin:0 auto}.hero-grid p{margin-left:auto;margin-right:auto}}
+#hero h1{font-size:clamp(2.4rem,7vw,3.8rem);color:var(--purple)}
+#hero h1 em{font-style:normal;color:var(--orange)}
+.pill{display:inline-block;margin-top:14px;background:var(--green);color:#fff;padding:10px 22px;border-radius:50px;font:800 1.1rem 'Baloo 2'}
+
+/* Kartu putar */
+.flip{perspective:1200px;height:300px;cursor:pointer}
+.flip-in{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.flip.on .flip-in{transform:rotateY(180deg)}
+.flip-f,.flip-b{position:absolute;inset:0;backface-visibility:hidden;border-radius:var(--r);box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px}
+.flip-f{background:#fff;border:4px solid var(--blue)}
+.flip-b{background:var(--blue);color:#fff;transform:rotateY(180deg)}
+.flip-b h3{color:#fff}.flip-b p{margin:0}
+.hint{font-size:.85rem;font-weight:800;color:var(--orange)}
+
+/* Pilihan jawaban */
+.opts{display:grid;gap:12px;margin-top:16px}
+.opt{text-align:left;background:#fff;border:3px solid var(--blue);border-radius:16px;padding:13px 18px;font-weight:800;font-size:1rem;color:var(--ink)}
+.opt:hover:not(:disabled){background:#E3F5FF}
+.opt.ok{background:var(--green);border-color:var(--green);color:#fff}
+.opt.no{background:var(--orange);border-color:var(--orange);color:#fff}
+.fb{margin-top:14px;font-weight:800;min-height:28px}
+.tf-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.tf-row .btn{margin:0}
+#tf-text,#rapid-text{font:800 1.5rem 'Baloo 2';min-height:84px;display:flex;align-items:center;justify-content:center;text-align:center}
+
+/* Checklist */
+.check{display:flex;gap:14px;align-items:center;background:#fff;border:4px solid transparent;border-radius:18px;padding:14px 18px;box-shadow:var(--shadow);cursor:pointer;margin-top:12px;font-weight:700}
+.check b{width:30px;height:30px;border-radius:9px;border:3px solid var(--purple);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:transparent}
+.check.done{border-color:var(--green);background:#EAFCF2}.check.done b{background:var(--green);border-color:var(--green);color:#fff}
+
+/* Langkah cuci tangan */
+.step{display:flex;gap:12px;align-items:center;background:#fff;border-radius:18px;padding:12px 16px;box-shadow:var(--shadow);border:3px solid var(--blue);font-weight:800}
+.step .n{background:var(--pink);color:#fff;border-radius:50%;width:34px;height:34px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2'}
+.step .e{font-size:1.8rem}
+.video-wrap{max-width:680px;margin:24px auto 0;border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);border:4px solid #fff;background:#000}
+.video-wrap video,.video-wrap img{width:100%}
+
+/* Susun urutan */
+#seq-pool,#seq-ans{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+#seq-ans{min-height:70px;background:#fff;border:3px dashed var(--blue);border-radius:18px;padding:12px}
+.chip{background:#fff;border:3px solid var(--yellow);border-radius:16px;padding:10px 14px;font-weight:800;box-shadow:var(--shadow);color:var(--ink)}
+.chip:disabled{opacity:.3;box-shadow:none}
+.slot{background:var(--blue);color:#fff;border:0;border-radius:14px;padding:9px 14px;font-weight:800}
+
+/* Game cepat */
+#rapid{background:var(--purple);color:#fff;border-radius:var(--r);box-shadow:var(--shadow);padding:30px;text-align:center;margin-top:24px}
+#rapid-timer{font:800 2.2rem 'Baloo 2';color:var(--yellow)}
+.btn.good{background:var(--yellow);color:var(--ink);margin:0}.btn.bad{background:var(--pink);margin:0}
+.btn:disabled{opacity:.5;transform:none}
+
+/* Kuis & janji */
+.quiz-q{font:800 1.3rem 'Baloo 2';margin-bottom:6px}
+textarea{width:100%;min-height:90px;border-radius:16px;border:3px solid var(--blue);padding:14px;font:inherit;resize:vertical}
+#k-list{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px}
+#k-list li{background:#EAFCF2;border-radius:14px;padding:10px 16px;font-weight:800}
+#penutup{background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff;text-align:center}
+#penutup h2{color:#fff}#penutup p{margin-left:auto;margin-right:auto}
+.final{font:800 1.6rem 'Baloo 2';color:var(--yellow);margin-top:16px}
+.heart{font-size:2.4rem;text-align:center;animation:wiggle 1s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(-10deg)}50%{transform:rotate(10deg)}}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:200;overflow:hidden}
+.cf{position:absolute;top:-20px;font-size:1.5rem;animation:fall 2.4s linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(360deg);opacity:.2}}
+:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.cf,.heart{animation:none}.flip-in{transition:none}}
+
+
+/* HTML */
+
+</style>
+</head>
+<body>
+<div id="scorebar"><span> Jagoan Anti Cacingan</span><span>⭐ <span id="liveScore">0 poin</span></span></div>
+<div id="navdots"></div>
+<div id="confetti"></div>
+<div id="soundbar"><button id="musicToggle" aria-label="Nyalakan atau matikan musik">🔇</button><span>Musik</span></div>
+<audio id="bgm" loop><source src="assets/Audio/bgm.mp3" type="audio/mpeg"></audio>
+
+<!-- HERO -->
+<section id="hero" class="section" data-nav="Mulai">
+  <div class="inner hero-grid">
+    <div>
+      <h1>Ayo jadi jagoan <em>anti cacingan!</em></h1>
+      <p style="font-size:1.15rem;margin-top:14px">Belajar bersama supaya badan sehat dan kuat. Kamu akan bertualang bersama James. </P>
+      <P>Siap?</p>
+      <div class="pill">Kamu bisa cegah cacing!</div><br>
+      <a href="#apersepsi" class="btn">Mulai Petualangan</a>
+    </div>
+    <div class="media-slot" data-emoji="🧒"><img src="assets/images/mascot.jpeg" alt="Maskot James"></div>
+  </div>
+</section>
+
+<!-- APERSEPSI -->
+<section id="apersepsi" class="section" data-nav="Kenalan">
+  <div class="inner">
+    <h2>Sebelum mulai, yuk cerita dulu</h2>
+    <p>Jawab jujur dan angkat tangan ya!</p>
+    <ul>
+      <li>Siapa yang kadang lupa cuci tangan sebelum makan?</li>
+      <li>Siapa yang suka main tanah?</li>
+      <li>Siapa yang main di luar tanpa sandal atau sepatu?</li>
+    </ul>
+    <p>Kebiasaan sehari-hari ternyata berhubungan erat dengan kesehatan. Salah satu penyakit yang bisa dicegah dengan kebiasaan bersih adalah <strong>cacingan</strong>. </p>
+      <P>Yuk kenalan lebih jauh!</P>
+  </div>
+</section>
+
+<!-- PENGERTIAN -->
+<section id="pengertian" class="section bg2" data-nav="Apa itu?">
+  <div class="inner">
+    <h2>Apa sih, cacingan itu?</h2>
+    <p>Cacingan adalah kondisi ketika <strong>cacing parasit</strong> masuk dan tinggal di dalam tubuh manusia, biasanya di usus. Beberapa jenis cacing menular lewat tanah yang tercemar. Cacingan diketahui lewat pemeriksaan tenaga kesehatan, misalnya cek tinja.</p>
+    <p>Ingat ya, kita tidak boleh mengejek teman yang sedang sakit. Teman yang sakit butuh dukungan dan pengobatan.</p>
+    <div class="heart">💚</div>
+    <div class="card" style="margin-top:20px">
+      <strong>Kenapa seseorang bisa cacingan?</strong>
+      <div class="opts" id="quiz1"></div>
+      <div class="fb" id="quiz1-fb"></div>
+    </div>
+  </div>
+</section>
+
+<!-- JENIS CACING -->
+<section id="jenis" class="section" data-nav="Jenis Cacing">
+  <div class="inner center">
+    <h2>Kenalan sama tiga jenis cacing</h2>
+    <p>Ketuk kartunya untuk membaliknya.</p>
+    <div class="grid3" id="wormCards"></div>
+  </div>
+</section>
+
+<!-- GEJALA -->
+<section id="gejala" class="section bg1" data-nav="Gejala">
+  <div class="inner">
+    <h2>Tanda-tanda tubuh butuh perhatian</h2>
+    <p>Cacingan tidak selalu menimbulkan gejala. Kalau infeksinya cukup berat, bisa muncul sakit perut, badan lemas (anemia), pertumbuhan terganggu, bahkan batuk pada jenis cacing tertentu.</p>
+    <p><strong>Penting:</strong> sakit perut belum tentu cacingan, karena penyebabnya banyak. Kalau tidak enak badan, cerita ke orang tua atau guru ya!</p>
+    <div class="card center" style="margin-top:20px;border-color:var(--blue)">
+      <div id="tf-num" style="font-weight:800;color:var(--orange)"></div>
+      <div id="tf-text">Memuat...</div>
+      <div class="tf-row" id="tf-btns">
+        <button class="btn" style="background:var(--green)" onclick="answerTF(true)">✅ </button>
+        <button class="btn" style="background:var(--orange)" onclick="answerTF(false)">❌ </button>
+      </div>
+      <div class="fb" id="tf-fb"></div>
+      <button class="btn blue" id="tf-again" style="display:none" onclick="restartTF()">🔁</button>
+    </div>
+  </div>
+</section>
+
+<!-- PENYEBAB -->
+<section id="penyebab" class="section" data-nav="Penyebab">
+  <div class="inner">
+    <h2>Dari mana cacing bisa masuk ke tubuh?</h2>
+    <div class="grid3">
+      <div class="card"><h3>BAB sembarangan</h3><p>Kotoran yang mengandung telur cacing mencemari tanah dan air.</p></div>
+      <div class="card"><h3>Tangan kotor</h3><p>Telur cacing menempel di tangan, lalu ikut masuk ke mulut saat makan.</p></div>
+      <div class="card"><h3>Makanan tak bersih</h3><p>Makanan atau air yang tercemar bisa membawa telur cacing.</p></div>
+      <div class="card"><h3>Main tanah</h3><p>Tangan bekas main tanah bisa membawa telur cacing ke mulut.</p></div>
+      <div class="card"><h3>Tanpa alas kaki</h3><p>Larva cacing tambang bisa masuk lewat kulit kaki.</p></div>
+      <div class="card"><h3>Tidak cuci tangan</h3><p>Tidak cuci tangan sebelum makan membuat telur cacing ikut tertelan.</p></div>
+    </div>
+    <div class="photos">
+      <div class="media-slot" data-emoji="🌱"><img src="assets/images/semua.jpeg" alt="Bermain tanah"></div>
+      <div class="media-slot" data-emoji="🚽"><img src="assets/images/bab-sembarangan.jpg" alt="BAB sembarangan"></div>
+      <div class="media-slot" data-emoji="🍲"><img src="assets/images/makanan.jpeg" alt="Makanan tercemar"></div>
+    </div>
+    <div class="card" style="margin-top:28px;border-color:var(--pink)">
+      <p style="margin:0"><strong>Cerita James:</strong> James bermain tanah di halaman, lalu makan kerupuk tanpa cuci tangan dulu. Menurutmu, bagaimana telur cacing bisa masuk ke tubuh James?</p>
+      <div class="opts" id="quiz2"></div>
+      <div class="fb" id="quiz2-fb"></div>
+    </div>
+    <div class="center" style="margin-top:30px">
+      <h3>Cara Kuman Menyebar</h3>
+      <div class="video-wrap"><img src="assets/images/poster.jpeg" alt="Poster cara kuman menyebar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DAMPAK -->
+<section id="dampak" class="section bg2" data-nav="Dampak">
+  <div class="inner">
+    <h2>Kenapa penting dicegah?</h2>
+    <div class="grid3">
+      <div class="card"><h3>Gangguan gizi</h3><p>Tubuh sulit menyerap zat gizi dari makanan.</p></div>
+      <div class="card"><h3>Anemia dan lemas</h3><p>Cacing tambang bisa membuat tubuh kehilangan darah.</p></div>
+      <div class="card"><h3>Pertumbuhan terganggu</h3><p>Infeksi berat dan lama memengaruhi tumbuh kembang.</p></div>
+      <div class="card"><h3>Susah fokus belajar</h3><p>Badan lemas membuat sulit konsentrasi di kelas.</p></div>
+      <div class="card"><h3>Gangguan organ</h3><p>Infeksi berat bisa mengganggu usus atau saluran empedu.</p></div>
+      <div class="card"><h3>Jadi...</h3><p>Dicegah supaya kita tetap sehat, tumbuh baik, dan semangat belajar.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PENCEGAHAN -->
+<section id="pencegahan" class="section bg3" data-nav="Cegah!">
+  <div class="inner">
+    <h2>6 kebiasaan jagoan anti cacingan</h2>
+    <p>Ketuk kebiasaan yang sudah kamu lakukan hari ini!</p>
+    <div id="checklist"></div>
+    <div class="center" style="margin-top:34px">
+      <h3>Cara Pencegahan</h3>
+      <div class="video-wrap">
+        <video controls preload="metadata"><source src="assets/Vidio/pencegahan.mp4" type="video/mp4">Video tidak dapat diputar di browser ini.</video>
+        <P>Sumber: Shofa&Hanna </P>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO CUCI TANGAN (BARU) -->
+<section id="vidcuci" class="section bg1" data-nav="Video Cuci Tangan">
+  <div class="inner center">
+    <h2>Ayo cuci tangan yang benar!</h2>
+    <p>Cuci tangan pakai sabun dan air mengalir selama kira-kira 20 detik. Ikuti urutannya ya:</p>
+    <div class="grid2" id="stepList" style="text-align:left"></div>
+    <div class="video-wrap">
+      <video controls preload="metadata"><source src="assets/Vidio/cuci-tangan.mp4" type="video/mp4">Video tidak dapat diputar di browser ini.</video>
+      <P>Sumber: Puskesma Wanokarto </P>
+    </div>
+    <!-- Ganti LINK_VIDEO_KAMU dengan link YouTube, atau hapus tombol ini -->
+    <a href="https://youtu.be/bh-yzGauniQ?si=FjUKZFNxy6GgmKNi" target="_blank" rel="noopener noreferrer" class="btn blue">▶️ Tonton di YouTube</a>
+  </div>
+</section>
+
+<!-- GAME URUTAN -->
+<section id="cucitangan" class="section" data-nav="Susun Langkah">
+  <div class="inner">
+    <h2>Susun langkah cuci tangan</h2>
+    <p>Ketuk langkah sesuai urutan yang benar. Salah pilih? Ketuk langkah di kotak jawaban untuk membatalkannya.</p>
+    <div id="seq-pool"></div>
+    <div id="seq-ans"></div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <button class="btn blue" onclick="checkSeq()">Cek Urutan</button>
+      <button class="btn ghost" onclick="resetSeq()">Ulangi</button>
+    </div>
+    <div class="fb" id="seq-fb"></div>
+  </div>
+</section>
+
+<!-- GAME CEPAT -->
+<section id="rapidgame" class="section bg2" data-nav="Game Seru">
+  <div class="inner">
+    <h2>Cepat Cegah Cacing</h2>
+    <p>Baca kebiasaannya. Kalau baik, tekan <strong>Bisa Cegah Cacing!</strong>. Kalau buruk, tekan <strong>Ayo Diperbaiki!</strong>. Kamu punya 30 detik!</p>
+    <div id="rapid">
+      <div id="rapid-timer">Siap?</div>
+      <div id="rapid-text">Tekan tombol mulai untuk main!</div>
+      <div class="tf-row">
+        <button class="btn good" id="r-good" onclick="rapidAnswer(true)" disabled>Bisa Cegah Cacing</button>
+        <button class="btn bad" id="r-bad" onclick="rapidAnswer(false)" disabled>Ayo Diperbaiki</button>
+      </div>
+      <div class="fb" id="rapid-res"></div>
+      <button class="btn blue" onclick="startRapid()">▶️</button>
+    </div>
+  </div>
+</section>
+
+<!-- KUIS -->
+<section id="kuis" class="section" data-nav="Kuis Akhir">
+  <div class="inner">
+    <h2>Seberapa jago kamu?</h2>
+    <div id="quizArea"></div>
+    <div id="quiz-result" class="card center" style="display:none;margin-top:20px">
+      <div class="media-slot" data-emoji="🏅" style="width:130px;margin:0 auto 12px"><img src="badge.png" alt="Lencana"></div>
+      <h3 id="quiz-score"></h3>
+      <button class="btn" onclick="restartQuiz()">🔁</button>
+    </div>
+  </div>
+</section>
+
+<!-- JANJI -->
+<section id="komitmen" class="section bg4" data-nav="Janjiku">
+  <div class="inner">
+    <h2>Janji jagoan sehat</h2>
+    <p>Tulis satu kebiasaan baik yang akan kamu mulai hari ini:</p>
+    <div class="card" style="border-color:var(--pink)">
+      <textarea id="k-input" placeholder="Contoh: Saya akan cuci tangan sebelum makan"></textarea>
+      <button class="btn" onclick="saveK()">Simpan Janjiku</button>
+      <ul id="k-list"></ul>
+    </div>
+  </div>
+</section>
+
+<!-- PENUTUP -->
+<section id="penutup" class="section" data-nav="Selesai">
+  <div class="inner">
+    <h2>Terima kasih sudah belajar bersama!</h2>
+    <p>Hari ini kita belajar tentang cacingan jenis, gejala, penyebab, dampak, sampai cara mencegahnya. Kebiasaan kecil setiap hari bisa menjaga kesehatan kita.</p>
+    <div class="final"> Jagoan! Bisa cegah cacing! </div>
+    <p style="margin-top:22px;opacity:.9;font-size:.9rem">Materi mengacu pada Permenkes RI No. 15 Tahun 2017 tentang Penanggulangan Cacingan.</p>
+    <P>Refactored and optimized with AI assistance</P>
+  </div>
+</section>
+
+ /* Java scripr*/
+<script>
+/* ===== DATA KONTEN ===== */
+const worms=[
+ {name:"Cacing Gelang",latin:"Ascaris lumbricoides",img:"assets/images/cacing-gelang.jpeg",fact:"Tubuhnya panjang dan bulat, seperti mi spageti. Telurnya tertelan lewat tangan atau makanan yang kotor."},
+ {name:"Cacing Cambuk",latin:"Trichuris trichiura",img:"assets/images/cacing-cambuk.jpeg",fact:"Bentuknya seperti cambuk: satu ujung kecil memanjang, ujung lain lebih tebal. Hidup di usus besar."},
+ {name:"Cacing Tambang",latin:"Ancylostoma duodenale & Necator americanus",img:"assets/images/cacing-tambang.jpeg",fact:"Larvanya bisa masuk lewat kulit kaki saat kita berjalan tanpa alas kaki di tanah tercemar."}
+];
+const quiz1=[
+ {t:"Telur atau larva cacing masuk ke tubuh lewat tangan, makanan, atau kulit kaki",ok:1},
+ {t:"Karena terlalu banyak makan permen",ok:0},
+ {t:"Karena jarang mandi",ok:0}
+];
+const quiz2=[
+ {t:"Dari tangan kotor yang memegang kerupuk lalu masuk ke mulut",ok:1},
+ {t:"Dari kerupuk yang terlalu renyah",ok:0},
+ {t:"Dari tanah yang hanya dilihat, tanpa disentuh",ok:0}
+];
+const tfData=[
+ {t:"Kalau sakit perut, pasti karena cacingan.",ok:false,why:"Sakit perut punya banyak penyebab, tidak selalu cacingan."},
+ {t:"Cacing tambang bisa menyebabkan anemia (kurang darah).",ok:true,why:"Cacing tambang menghisap darah, sehingga tubuh bisa lemas."},
+ {t:"Cacingan selalu menimbulkan gejala yang jelas.",ok:false,why:"Cacingan sering tanpa gejala, apalagi kalau infeksinya ringan."},
+ {t:"Infeksi cacing yang berat bisa mengganggu pertumbuhan anak.",ok:true,why:"Gizi terganggu, jadi tumbuh kembang ikut terganggu."},
+ {t:"Teman yang cacingan sebaiknya dijauhi dan diejek.",ok:false,why:"Teman yang sakit perlu didukung dan diobati, bukan diejek."}
+];
+const habits=["🧼 Cuci tangan pakai sabun sebelum makan dan setelah BAB","🩴 Pakai sandal atau sepatu saat main di luar","🥦 Cuci buah dan sayur sebelum dimakan","🚽 Buang air besar di toilet","💊 Ikut program minum obat cacing dari sekolah atau puskesmas","✂️ Potong kuku secara rutin agar tetap bersih"];
+const steps=[
+ {e:"💧",t:"Basahi tangan dengan air mengalir"},
+ {e:"🧴",t:"Ambil sabun secukupnya"},
+ {e:"👏",t:"Gosok kedua telapak tangan"},
+ {e:"🤚",t:"Gosok punggung tangan kiri dan kanan"},
+ {e:"🙌",t:"Gosok sela-sela jari"},
+ {e:"💅",t:"Gosok kuku dan ujung jari"},
+ {e:"🚿",t:"Bilas sampai bersih dengan air mengalir"},
+ {e:"🧻",t:"Keringkan dengan handuk atau tisu bersih"}
+];
+const rapidData=[
+ ["Cuci tangan sebelum makan",1],["Berjalan tanpa sandal di tanah becek",0],["Buang air besar di toilet",1],
+ ["Makan dengan tangan kotor",0],["Memotong kuku secara rutin",1],["Main tanah lalu langsung makan",0],
+ ["Mencuci buah sebelum dimakan",1],["Buang air besar di kebun",0],["Pakai sepatu saat main di luar",1],
+ ["Jajan tanpa cuci tangan",0],["Minum obat cacing sesuai arahan",1],["Menggigit kuku yang kotor",0]
+];
+const finalQuiz=[
+ {q:"Apa yang dimaksud cacingan?",o:["Kondisi cacing parasit hidup di dalam tubuh","Sakit karena kehujanan","Sakit karena banyak makan permen"],c:0},
+ {q:"Manakah tiga cacing yang menular lewat tanah?",o:["Cacing tanah, ulat, dan belut","Cacing gelang, cambuk, dan tambang","Cacing laut, lintah, dan cacing sutra"],c:1},
+ {q:"Kapan kita harus cuci tangan pakai sabun?",o:["Hanya kalau tangan terlihat kotor sekali","Hanya saat mandi","Sebelum makan, setelah BAB, dan setelah bermain"],c:2},
+ {q:"Kenapa harus pakai alas kaki saat main di luar?",o:["Supaya larva cacing tambang tidak masuk lewat kulit kaki","Supaya kaki tidak kedinginan","Supaya sandal tidak hilang"],c:0},
+ {q:"Manakah kebiasaan yang bisa mencegah cacingan?",o:["Makan sambil bermain tanah","Cuci tangan, pakai alas kaki, dan BAB di toilet","Jajan makanan yang tidak tertutup"],c:1}
+];
+
+/* ===== UTIL ===== */
+const $=id=>document.getElementById(id);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let ac;
+function playSfx(type){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const s=type==='correct'?[[660,0],[880,.12]]:[[240,0],[190,.14]];
+ s.forEach(([f,d])=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.type='triangle';o.frequency.value=f;
+ g.gain.setValueAtTime(.18,t);g.gain.exponentialRampToValueAtTime(.001,t+.25);o.connect(g);g.connect(ac.destination);o.start(t);o.stop(t+.26)})}catch(e){}}
+let score=0;
+function addScore(n){if(n<=0)return;score+=n;$('liveScore').textContent=score+' poin';confetti()}
+function confetti(){const l=$('confetti'),em=['🎉','✨','🌟','💧','🧼'];
+ for(let i=0;i<12;i++){const s=document.createElement('span');s.className='cf';s.textContent=em[Math.floor(Math.random()*em.length)];
+ s.style.left=Math.random()*100+'vw';s.style.animationDelay=Math.random()*.4+'s';l.appendChild(s);setTimeout(()=>s.remove(),2900)}}
+function setFb(el,ok,msg){el.textContent=msg;el.style.color=ok?'#1a9e5c':'#e0651a'}
+
+/* Gambar cadangan: kalau file tidak ada, tampilkan emoji */
+document.querySelectorAll('.media-slot').forEach(slot=>{
+ const img=slot.querySelector('img');if(!img)return;
+ const fail=()=>{img.remove();slot.textContent=slot.dataset.emoji||'🖼️'};
+ img.addEventListener('error',fail);
+ if(img.complete&&img.naturalWidth===0)fail();
+});
+
+/* Musik */
+const bgm=$('bgm');bgm.volume=.6;let musicOn=false;
+$('musicToggle').addEventListener('click',()=>{musicOn=!musicOn;$('musicToggle').textContent=musicOn?'🔊':'🔇';
+ if(musicOn)bgm.play().catch(()=>{});else bgm.pause()});
+
+/* Titik navigasi */
+const secs=[...document.querySelectorAll('.section[data-nav]')],nd=$('navdots');
+secs.forEach(s=>{const a=document.createElement('a');a.href='#'+s.id;a.title=s.dataset.nav;nd.appendChild(a)});
+const dots=[...nd.children];
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){dots.forEach(d=>d.classList.remove('active'));dots[secs.indexOf(e.target)].classList.add('active')}}),{threshold:.4});
+secs.forEach(s=>io.observe(s));
+
+/* Pilihan jawaban (dipakai 2 tempat) */
+function buildChoice(id,data){
+ const box=$(id),fb=$(id+'-fb');
+ data.forEach(d=>{const b=document.createElement('button');b.className='opt';b.textContent=d.t;
+  b.onclick=()=>{[...box.children].forEach(c=>c.disabled=true);
+   if(d.ok){b.classList.add('ok');playSfx('correct');addScore(10);setFb(fb,1,'✅ Betul sekali!')}
+   else{b.classList.add('no');playSfx('wrong');box.children[data.findIndex(x=>x.ok)].classList.add('ok');setFb(fb,0,'❌ Belum tepat. Jawaban yang benar sudah ditandai hijau.')}};
+  box.appendChild(b)});
+}
+buildChoice('quiz1',quiz1);buildChoice('quiz2',quiz2);
+
+/* Kartu jenis cacing */
+worms.forEach(w=>{const c=document.createElement('div');c.className='flip';c.tabIndex=0;c.setAttribute('role','button');
+ c.innerHTML=`<div class="flip-in"><div class="flip-f"><div class="media-slot" data-emoji="🪱" style="width:110px;font-size:2.6rem"><img src="${w.img}" alt="${w.name}"></div><h3>${w.name}</h3><span class="hint">Ketuk untuk lihat</span></div>
+ <div class="flip-b"><h3>${w.name}</h3><em style="font-size:.85rem">${w.latin}</em><p>${w.fact}</p></div></div>`;
+ const t=()=>c.classList.toggle('on');c.onclick=t;c.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}};
+ $('wormCards').appendChild(c);
+ const slot=c.querySelector('.media-slot'),img=slot.querySelector('img');
+ const fail=()=>{img.remove();slot.textContent='🪱'};img.addEventListener('error',fail);if(img.complete&&img.naturalWidth===0)fail()});
+
+/* Benar / Salah */
+let tfi=0,tfLock=false;
+function loadTF(){$('tf-fb').textContent='';
+ if(tfi>=tfData.length){$('tf-text').textContent='Selesai! Kamu sudah menjawab semua pernyataan. 🎉';$('tf-num').textContent='';$('tf-btns').style.display='none';$('tf-again').style.display='inline-block';return}
+ $('tf-text').textContent=tfData[tfi].t;$('tf-num').textContent='Pernyataan '+(tfi+1)+' dari '+tfData.length;tfLock=false}
+function answerTF(v){if(tfLock)return;tfLock=true;const d=tfData[tfi],ok=v===d.ok;
+ setFb($('tf-fb'),ok,(ok?'✅ Betul! ':'❌ Belum tepat. ')+d.why);playSfx(ok?'correct':'wrong');if(ok)addScore(10);
+ tfi++;setTimeout(loadTF,2200)}
+function restartTF(){tfi=0;$('tf-btns').style.display='flex';$('tf-again').style.display='none';loadTF()}
+loadTF();
+
+/* Checklist (poin hanya sekali per item) */
+habits.forEach(h=>{const d=document.createElement('div');d.className='check';d.tabIndex=0;let got=false;
+ d.innerHTML=`<b>✓</b><span>${h}</span>`;
+ const t=()=>{d.classList.toggle('done');if(d.classList.contains('done')&&!got){got=true;playSfx('correct');addScore(5)}};
+ d.onclick=t;d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}};$('checklist').appendChild(d)});
+
+/* Daftar langkah cuci tangan */
+steps.forEach((s,i)=>{const d=document.createElement('div');d.className='step';
+ d.innerHTML=`<span class="n">${i+1}</span><span class="e">${s.e}</span><span>${s.t}</span>`;$('stepList').appendChild(d)});
+
+/* Susun urutan */
+let seqPick=[],seqOrder=[];
+function resetSeq(){seqPick=[];do{seqOrder=shuffle(steps.map((_,i)=>i))}while(seqOrder.every((v,i)=>v===i));$('seq-fb').textContent='';renderSeq()}
+function renderSeq(){const pool=$('seq-pool'),ans=$('seq-ans');pool.innerHTML='';ans.innerHTML='';
+ seqOrder.forEach(i=>{const b=document.createElement('button');b.className='chip';b.textContent=steps[i].e+' '+steps[i].t;b.disabled=seqPick.includes(i);
+  b.onclick=()=>{seqPick.push(i);renderSeq()};pool.appendChild(b)});
+ if(!seqPick.length)ans.innerHTML='<span style="opacity:.6">Jawabanmu muncul di sini...</span>';
+ seqPick.forEach((i,n)=>{const b=document.createElement('button');b.className='slot';b.textContent=(n+1)+'. '+steps[i].e+' '+steps[i].t;
+  b.onclick=()=>{seqPick.splice(n,1);renderSeq()};ans.appendChild(b)})}
+let seqDone=false;
+function checkSeq(){const fb=$('seq-fb');
+ if(seqPick.length<steps.length){setFb(fb,0,'Susun semua langkahnya dulu ya!');return}
+ const wrong=seqPick.filter((v,i)=>v!==i).length;
+ if(!wrong){setFb(fb,1,'✅ Urutannya benar! Kamu jago cuci tangan!');playSfx('correct');if(!seqDone){seqDone=true;addScore(20)}}
+ else{setFb(fb,0,'❌ Ada '+wrong+' langkah yang masih tertukar. Coba lagi ya!');playSfx('wrong')}}
+resetSeq();
+
+/* Game cepat */
+let rQ=[],rTimer=null,rLeft=30,rScore=0,rCur=null;
+function setRapidBtns(on){$('r-good').disabled=!on;$('r-bad').disabled=!on}
+function startRapid(){clearInterval(rTimer);rQ=shuffle(rapidData);rLeft=30;rScore=0;$('rapid-res').textContent='';
+ $('rapid-timer').textContent='⏱️ 30 detik';setRapidBtns(true);nextRapid();
+ rTimer=setInterval(()=>{rLeft--;$('rapid-timer').textContent='⏱️ '+rLeft+' detik';
+  if(rLeft<=0){clearInterval(rTimer);setRapidBtns(false);$('rapid-text').textContent='Waktu habis!';
+   $('rapid-res').textContent='Skor kamu: '+rScore+' poin 🎉';addScore(rScore)}},1000)}
+function nextRapid(){if(!rQ.length)rQ=shuffle(rapidData);rCur=rQ.shift();$('rapid-text').textContent=rCur[0]}
+function rapidAnswer(v){if(rLeft<=0||!rCur)return;if(v===!!rCur[1]){rScore+=10;playSfx('correct')}else{rScore=Math.max(0,rScore-5);playSfx('wrong')}nextRapid()}
+
+/* Kuis akhir */
+let qi=0,qs=0;
+function renderQuiz(){const area=$('quizArea');$('quiz-result').style.display='none';area.style.display='block';
+ if(qi>=finalQuiz.length){area.style.display='none';$('quiz-result').style.display='block';
+  $('quiz-score').textContent='Skor kamu: '+qs+' / '+finalQuiz.length+(qs===finalQuiz.length?' — Jagoan Anti Cacingan! 🏆':' — Bagus, terus belajar ya! 💪');addScore(qs*10);return}
+ const it=finalQuiz[qi];
+ area.innerHTML=`<div class="card"><div class="quiz-q">${qi+1}. ${it.q}</div><div class="opts" id="qo"></div></div>`;
+ const box=$('qo');
+ it.o.forEach((t,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=t;
+  b.onclick=()=>{[...box.children].forEach(c=>c.disabled=true);
+   if(i===it.c){b.classList.add('ok');qs++;playSfx('correct')}else{b.classList.add('no');box.children[it.c].classList.add('ok');playSfx('wrong')}
+   setTimeout(()=>{qi++;renderQuiz()},1100)};box.appendChild(b)})}
+function restartQuiz(){qi=0;qs=0;renderQuiz()}
+renderQuiz();
+
+/* Janji (disimpan di perangkat) */
+const KEY='komitmenCacingan';
+function getK(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[]}}
+function loadK(){const l=$('k-list');l.innerHTML='';getK().forEach(t=>{const li=document.createElement('li');li.textContent='✅ '+t;l.appendChild(li)})}
+function saveK(){const i=$('k-input'),t=i.value.trim();if(!t)return;const d=getK();d.push(t);
+ try{localStorage.setItem(KEY,JSON.stringify(d))}catch(e){}
+ i.value='';loadK();addScore(15)}
+loadK();
+</script>
+</body>
+</html>
